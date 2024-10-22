@@ -15,7 +15,7 @@ const category = require('./routes/categoryRoutes')
 
 app.use(express.json())
 app.use(cors({
-    origin: 'https://nabeelhash-ecommerce.vercel.app/', // Replace with your client's origin
+    origin: 'https://nabeelhash-ecommerce.vercel.app', // Replace with your client's origin
     credentials: true,
 }));
 app.use(cookieParser())

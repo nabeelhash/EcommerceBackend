@@ -1,4 +1,4 @@
-const datauri = require('datauri/package.js')
+const datauri = require('datauri/parser.js')
 const path = require('path')
 
 const getParser = function(file){

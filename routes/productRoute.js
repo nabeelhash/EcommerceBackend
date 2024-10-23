@@ -89,7 +89,9 @@ router.patch('/cloud', upload.single('pic'), async function (req, res) {
         if(!req.file){
             return res.status(400).json('img not found')
         }
-        const parser = getParser(req.file)    
+        const dataUri = getParser(req.file);
+        console.log('Parsed data:', dataUri)
+        return res.status(200).json({message:'Image processed successfully',file: req.file});    
     }
     catch (error) {
         return res.status(400).json(error)

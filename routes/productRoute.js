@@ -6,7 +6,8 @@ const Product = require('../models/productModel')
 const authenticate = require('../middleware/authenticate')
 const {adminRole} = require('../middleware/Role')
 
-const upload = require('../middleware/multer')
+const upload = require('../middleware/multer');
+const getParser = require('../middleware/getParser');
 
 
 router.post('/createProduct', authenticate, upload.single('pic'), async function (req, res) {
@@ -82,6 +83,18 @@ router.patch('/updateProduct/:productId', upload.single('pic'), async function (
     }
 })
 
+//checkImage
+router.patch('/cloud', upload.single('pic'), async function (req, res) {
+    try {
+        if(!req.file){
+            return res.status(400).json('img not found')
+        }
+        const parser = getParser(req.file)    
+    }
+    catch (error) {
+        return res.status(400).json(error)
+    }
+})
 
 
 //deleteProduct

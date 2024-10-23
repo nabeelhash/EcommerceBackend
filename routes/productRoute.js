@@ -19,14 +19,17 @@ router.post('/createProduct', authenticate, upload.single('pic'), async function
         }
         if(!req.file){
             return res.status(400).json('img not found')
-
         }
+        const dataUri = getParser(req.file);
+        const response = await cloudinary.uploader.upload(dataUri, {
+            folder: "ecommerce"
+        });
         const createProduct = await Product.create({
             user: req.userId,
             name: req.body.name,
             des: req.body.des,
             price: req.body.price,
-            image: req.file.path, 
+            image: response.secure_url, 
             category: req.body.category,
             stock: req.body.stock
         })
@@ -64,15 +67,20 @@ router.get('/singleproduct/:id', async function (req, res) {
 //updateProduct
 router.patch('/updateProduct/:productId', upload.single('pic'), async function (req, res) {
     try {
-        
-        
+        if(!req.file){
+            return res.status(400).json('img not found')
+        }
+        const dataUri = getParser(req.file);
+        const response = await cloudinary.uploader.upload(dataUri, {
+            folder: "ecommerce"
+        });
         const update = await Product.findByIdAndUpdate(
             req.params.productId,
             {
                 name: req.body.name,
                 des: req.body.des,
                 price: req.body.price,
-                image: req.file.path, // Collect paths of the uploaded images
+                image: response.secure_url,
                 category: req.body.category,
                 stock: req.body.stock
             },
@@ -84,24 +92,23 @@ router.patch('/updateProduct/:productId', upload.single('pic'), async function (
     }
 })
 
-//checkImage
-router.post('/cloud', upload.single('pic'), async function (req, res) {
-    try {
-        if(!req.file){
-            return res.status(400).json('img not found')
-        }
-        const dataUri = getParser(req.file);
-        console.log('datauri',dataUri)
-        const response = await cloudinary.uploader.upload(dataUri, {
-            folder: "ecommerce"
-        });
-        console.log('Upload',response)
-        return res.status(200).json({message:'Image uploaded successfully',response});    
-    }
-    catch (error) {
-        return res.status(400).json(error)
-    }
-})
+// //checkImage
+// router.post('/cloud', upload.single('pic'), async function (req, res) {
+//     try {
+//         if(!req.file){
+//             return res.status(400).json('img not found')
+//         }
+//         const dataUri = getParser(req.file);
+//         const response = await cloudinary.uploader.upload(dataUri, {
+//             folder: "ecommerce"
+//         });
+//         console.log('Upload',response)
+//         return res.status(200).json({message:'Image uploaded successfully',response});    
+//     }
+//     catch (error) {
+//         return res.status(400).json(error)
+//     }
+// })
 
 
 //deleteProduct

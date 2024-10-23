@@ -95,7 +95,7 @@ router.patch('/cloud', upload.single('pic'), async function (req, res) {
         const response = await cloudinary.uploader.upload(dataUri, {
             folder: "ecommerce"
         });
-        return res.status(200).json({message:'Image processed successfully',file: req.file});    
+        return res.status(200).json({message:'Image processed successfully',response: response.secure_url});    
     }
     catch (error) {
         return res.status(400).json(error)

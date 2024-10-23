@@ -8,6 +8,7 @@ const {adminRole} = require('../middleware/Role')
 
 const upload = require('../middleware/multer');
 const getParser = require('../middleware/getParser');
+const cloudinary = require('../middleware/cloudinary');
 
 
 router.post('/createProduct', authenticate, upload.single('pic'), async function (req, res) {
@@ -91,6 +92,9 @@ router.patch('/cloud', upload.single('pic'), async function (req, res) {
         }
         const dataUri = getParser(req.file);
         console.log('Parsed data:', dataUri)
+        const response = await cloudinary.uploader.upload(dataUri, {
+            folder: "ecommerce"
+        });
         return res.status(200).json({message:'Image processed successfully',file: req.file});    
     }
     catch (error) {

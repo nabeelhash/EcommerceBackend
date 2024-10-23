@@ -96,7 +96,7 @@ router.post('/cloud', upload.single('pic'), async function (req, res) {
             folder: "ecommerce"
         });
         console.log('Upload',response)
-        return res.status(200).json({message:'Image processed successfully',response});    
+        return res.status(200).json({message:'Image uploaded successfully',response});    
     }
     catch (error) {
         return res.status(400).json(error)

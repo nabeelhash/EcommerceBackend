@@ -85,17 +85,18 @@ router.patch('/updateProduct/:productId', upload.single('pic'), async function (
 })
 
 //checkImage
-router.patch('/cloud', upload.single('pic'), async function (req, res) {
+router.post('/cloud', upload.single('pic'), async function (req, res) {
     try {
         if(!req.file){
             return res.status(400).json('img not found')
         }
         const dataUri = getParser(req.file);
-        console.log('Parsed data:', dataUri)
+        console.log('datauri',dataUri)
         const response = await cloudinary.uploader.upload(dataUri, {
             folder: "ecommerce"
         });
-        return res.status(200).json({message:'Image processed successfully',response: response.secure_url});    
+        console.log('Upload',response)
+        return res.status(200).json({message:'Image processed successfully',response});    
     }
     catch (error) {
         return res.status(400).json(error)
